@@ -3,13 +3,21 @@ function getSum() {
     const y = 10;
     return x + y;
 }
-const addition = getSum();
-console.log(addition);
+const add = getSum();
+console.log(add);
 
 function getSubtraction() {
     const x = 20;
     const y = 8;
     return x - y;
 }
-const subtraction = getSubtraction();
-console.log(subtraction);
+const subtract = getSubtraction();
+console.log(subtract);
+
+function getMultiplication() {
+    const x = 10;
+    const y = 8;
+    return x * y;
+}
+const multiply = getMultiplication();
+console.log(multiply);
