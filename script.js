@@ -8,18 +8,38 @@ let array = [];
 let stringNum = "";
 
 function getSum() {
+    let firstIndex = array.findIndex(element => element === "+")- 1;
+    let secondIndex = array.findIndex(element => element === "+")+ 1;
+    let x = parseInt(array[firstIndex]);
+    let y = parseInt(array[secondIndex]);
+    
     return x + y;
 }
 
 function getSubtraction() {
+    let firstIndex = array.findIndex(element => element === "-")- 1;
+    let secondIndex = array.findIndex(element => element === "-")+ 1;
+    let x = parseInt(array[firstIndex]);
+    let y = parseInt(array[secondIndex]);
+    
     return x - y;
 }
 
 function getMultiplication() {
+    let firstIndex = array.findIndex(element => element === "*")- 1;
+    let secondIndex = array.findIndex(element => element === "*")+ 1;
+    let x = parseInt(array[firstIndex]);
+    let y = parseInt(array[secondIndex]);
+    
     return x * y;
 }
 
 function getDivision() {
+    let firstIndex = array.findIndex(element => element === "/")- 1;
+    let secondIndex = array.findIndex(element => element === "/")+ 1;
+    let x = parseInt(array[firstIndex]);
+    let y = parseInt(array[secondIndex]);
+    
     return x / y;
 }
 
@@ -31,27 +51,46 @@ function displayNumber(e) {
 
 function displayOperator(e) {
     const operator = e.target.dataset.operator;
-    display.textContent += operator;
-    array.push(stringNum);
-    array.push(operator);
+    console.log(stringNum);
+
+    if (stringNum != "") {
+        array.push(stringNum);
+    } 
     stringNum = "";
 
-    console.log(stringNum);
+    display.textContent += operator;
+    array.push(operator);
+   
     console.log(array);
 }
 
 function operate(e) {
-    display.textContent = "";
+    array.push(stringNum);
+    display.textContent = "";  
+    console.log(array);
 
-    // if (operator === "+" && operator === "=") {
-    //     console.log(getSum());
-    // } else if (operator === "-" && operator === "=") {
-    //     console.log(getSubtraction());
-    // } else if (operator === "*" && operator === "=") {
-    //     console.log(getMultiplication());
-    // } else if (operator === "/" && operator === "=") {
-    //     console.log(divide = getDivision());
-    // }
+    const newArray = array.map(arg => {
+        if(arg.includes("/")) {
+            const answer = getDivision();          
+            return answer;
+        } else if(arg.includes("*")) {
+            const answer = getMultiplication();          
+            return answer;
+        } else if(arg.includes("+")) {
+            const answer = getSum();
+            return answer;
+        } else if(arg.includes("-")){
+            const answer = getSubtraction();
+            return answer;
+        }
+    });
+    const answer = newArray.join("");
+    display.textContent += answer;
+    stringNum = "";
+    array = [];
+    console.log(array);
+    array.push(answer);
+    console.log(array);
 }
 
 numbers.forEach(number => number.addEventListener("click", displayNumber));
