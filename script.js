@@ -5,92 +5,103 @@ const initializer = document.querySelector(".operateButton");
 
 let textContent = "";
 let array = [];
-let stringNum = "";
+let numString = "";
 
 function getSum() {
-    let firstIndex = array.findIndex(element => element === "+")- 1;
-    let secondIndex = array.findIndex(element => element === "+")+ 1;
-    let x = parseInt(array[firstIndex]);
-    let y = parseInt(array[secondIndex]);
-    
+    const index = array.indexOf("+");
+    const firstIndex = index - 1;
+    const secondIndex = index + 1;
+    const x = parseInt(array[firstIndex]);
+    const y = parseInt(array[secondIndex]);
     return x + y;
 }
 
 function getSubtraction() {
-    let firstIndex = array.findIndex(element => element === "-")- 1;
-    let secondIndex = array.findIndex(element => element === "-")+ 1;
-    let x = parseInt(array[firstIndex]);
-    let y = parseInt(array[secondIndex]);
-    
+    const index = array.indexOf("-");
+    const firstIndex = index - 1;
+    const secondIndex = index + 1;
+    const x = parseInt(array[firstIndex]);
+    const y = parseInt(array[secondIndex]);
     return x - y;
 }
 
 function getMultiplication() {
-    let firstIndex = array.findIndex(element => element === "*")- 1;
-    let secondIndex = array.findIndex(element => element === "*")+ 1;
-    let x = parseInt(array[firstIndex]);
-    let y = parseInt(array[secondIndex]);
-    
+    const index = array.indexOf("*");
+    const firstIndex = index - 1;
+    const secondIndex = index + 1;
+    const x = parseInt(array[firstIndex]);
+    const y = parseInt(array[secondIndex]);
     return x * y;
 }
 
 function getDivision() {
-    let firstIndex = array.findIndex(element => element === "/")- 1;
-    let secondIndex = array.findIndex(element => element === "/")+ 1;
-    let x = parseInt(array[firstIndex]);
-    let y = parseInt(array[secondIndex]);
-    
+    const index = array.indexOf("/");
+    const firstIndex = index - 1;
+    const secondIndex = index + 1;
+    const x = parseInt(array[firstIndex]);
+    const y = parseInt(array[secondIndex]);
     return x / y;
 }
 
 function displayNumber(e) {
     const num = e.target.dataset.num;
     display.textContent += num;
-    stringNum += num; 
+    numString += num; 
 }
 
 function displayOperator(e) {
     const operator = e.target.dataset.operator;
-    console.log(stringNum);
-
-    if (stringNum != "") {
-        array.push(stringNum);
+ 
+    if (numString != "") {
+        array.push(numString);
     } 
-    stringNum = "";
+    numString = "";
 
     display.textContent += operator;
     array.push(operator);
-   
-    console.log(array);
 }
 
 function operate(e) {
-    array.push(stringNum);
+    array.push(numString);
     display.textContent = "";  
     console.log(array);
 
-    const newArray = array.map(arg => {
-        if(arg.includes("/")) {
-            const answer = getDivision();          
-            return answer;
-        } else if(arg.includes("*")) {
-            const answer = getMultiplication();          
-            return answer;
-        } else if(arg.includes("+")) {
+    for (let i = 0; i < array.length; i++ ){
+        console.log(array);
+        console.log(array[i]);
+        
+        if (array[i] === "+") {
             const answer = getSum();
-            return answer;
-        } else if(arg.includes("-")){
+            console.log(answer);
+            array.splice(0, 3, answer);
+            console.log(array);
+            i--;
+        } else if (array[i] === "-") {
             const answer = getSubtraction();
-            return answer;
-        }
-    });
-    const answer = newArray.join("");
+            array.splice(0, 3, answer);
+            console.log(array);
+            i--;
+        } else if (array[i] === "*") {
+            const answer = getMultiplication();  
+            array.splice(0, 3, answer);
+            console.log(array);
+            i--;
+        } else if (array[i] === "/") {
+            const answer = getDivision();
+            array.splice(0, 3, answer);
+            console.log(array);
+            i--;
+        }  
+    }
+
+    const answer = array.join("");
+    console.log(answer);
     display.textContent += answer;
-    stringNum = "";
-    array = [];
-    console.log(array);
-    array.push(answer);
-    console.log(array);
+    // numString = "";
+    // array = [];
+    // console.log(array);
+    // array.push(answer);
+    // console.log(array);
 }
 
 numbers.forEach(number => number.addEventListener("click", displayNumber));
