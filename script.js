@@ -6,104 +6,141 @@ const initializer = document.querySelector(".operateButton");
 let textContent = "";
 let array = [];
 let numString = "";
+let count = 0;
 
 function getSum() {
     const index = array.indexOf("+");
     const firstIndex = index - 1;
     const secondIndex = index + 1;
-    const x = parseInt(array[firstIndex]);
-    const y = parseInt(array[secondIndex]);
-    return x + y;
+    const x = parseFloat(array[firstIndex]);
+    const y = parseFloat(array[secondIndex]);
+  
+    if (isNaN(y)){
+        return x + x;
+    } else {
+        return x + y;
+    }
 }
 
 function getSubtraction() {
     const index = array.indexOf("-");
     const firstIndex = index - 1;
     const secondIndex = index + 1;
-    const x = parseInt(array[firstIndex]);
-    const y = parseInt(array[secondIndex]);
-    return x - y;
+    const x = parseFloat(array[firstIndex]);
+    const y = parseFloat(array[secondIndex]);
+   
+    if (isNaN(y)){
+        return x - x;
+    } else {
+        return x - y;
+    }
 }
 
 function getMultiplication() {
     const index = array.indexOf("*");
     const firstIndex = index - 1;
     const secondIndex = index + 1;
-    const x = parseInt(array[firstIndex]);
-    const y = parseInt(array[secondIndex]);
-    return x * y;
+    const x = parseFloat(array[firstIndex]);
+    const y = parseFloat(array[secondIndex]);
+
+    if (isNaN(y)){
+        return x * x;
+    } else {
+        return x * y;
+    }
 }
 
 function getDivision() {
     const index = array.indexOf("/");
     const firstIndex = index - 1;
     const secondIndex = index + 1;
-    const x = parseInt(array[firstIndex]);
-    const y = parseInt(array[secondIndex]);
-    return x / y;
+    const x = parseFloat(array[firstIndex]);
+    const y = parseFloat(array[secondIndex]);
+
+    if (isNaN(y)){
+        return x / x;
+    } else {
+        return x / y;
+    }
 }
 
-function displayNumber(e) {
+function getNumber(e) {
+    //  add a function that removes previous calculated solution
+    // if  user adds number to solution before pressing an operator  
     const num = e.target.dataset.num;
-    display.textContent += num;
+    if (array[0] === undefined) {
+        display.textContent += num;
+    } else if (array[1] !== undefined && numString === ""){
+        display.textContent = "";
+        display.textContent += num;
+    } else {
+        display.textContent += num;
+    }
     numString += num; 
 }
 
-function displayOperator(e) {
+function getOperator(e) {
     const operator = e.target.dataset.operator;
- 
+    count ++;
+   
     if (numString != "") {
         array.push(numString);
     } 
     numString = "";
+    console.log(array);
 
-    display.textContent += operator;
-    array.push(operator);
+    if (count >= 2 && array[2] !== undefined) {
+        operate(e);
+        array.push(operator);
+    } else if (count >=2 && array[1] === undefined) {
+        array.push(operator);
+    } else if (count >=2 && array[2] === undefined) {
+        operate(e);   
+    } else {
+        array.push(operator);
+    }
+    console.log(array);
 }
 
 function operate(e) {
-    array.push(numString);
+    if (numString != "") {
+        array.push(numString);
+    } 
+    numString = "";
     display.textContent = "";  
     console.log(array);
 
     for (let i = 0; i < array.length; i++ ){
-        console.log(array);
-        console.log(array[i]);
-        
         if (array[i] === "+") {
             const answer = getSum();
             console.log(answer);
             array.splice(0, 3, answer);
             console.log(array);
-            i--;
+            break;
         } else if (array[i] === "-") {
             const answer = getSubtraction();
             array.splice(0, 3, answer);
             console.log(array);
-            i--;
+            break;
         } else if (array[i] === "*") {
             const answer = getMultiplication();  
             array.splice(0, 3, answer);
             console.log(array);
-            i--;
+            break;
         } else if (array[i] === "/") {
             const answer = getDivision();
             array.splice(0, 3, answer);
             console.log(array);
-            i--;
+            break;
         }  
     }
 
     const answer = array.join("");
     console.log(answer);
     display.textContent += answer;
-    // numString = "";
-    // array = [];
-    // console.log(array);
-    // array.push(answer);
-    // console.log(array);
 }
 
-numbers.forEach(number => number.addEventListener("click", displayNumber));
-operators.forEach(operator => operator.addEventListener("click", displayOperator));
+numbers.forEach(number => number.addEventListener("click", getNumber));
+operators.forEach(operator => operator.addEventListener("click", getOperator));
 initializer.addEventListener("click", operate);
+ 
