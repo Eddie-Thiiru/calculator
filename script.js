@@ -75,7 +75,10 @@ function getDivision() {
 
 function getNumber(e) {
     const num = e.target.dataset.num;
-    if (array[0] === undefined) {
+    if (num === "."){
+        display.textContent += num;
+        numString += num; 
+    }else if (array[0] === undefined) {
         display.textContent += num;
         numString += num; 
     } else if (array[0] !== undefined && array[1] === undefined){
@@ -120,7 +123,6 @@ function getOperator(e) {
 }
 
 function operate(e) {
-    // fix bug, pressing equals 
     if (numString !== "") {
         array.push(numString);
     } 
@@ -163,7 +165,7 @@ function operate(e) {
         } else {
             const answer = parseFloat(array[0]);
             array.splice(0, 1, answer);
-            console.log(array);
+            solution = 0;
             solution += parseFloat(array[0].toFixed(7));
             display.textContent += solution;
         }    
@@ -177,4 +179,6 @@ numbers.forEach(number => number.addEventListener("click", getNumber));
 operators.forEach(operator => operator.addEventListener("click", getOperator));
 initializer.addEventListener("click", operate);
  
-// added support for decimal number inputs
+// Add support for decimal number inputs
+
+// convert the solution to string to remove imperfect calculations
