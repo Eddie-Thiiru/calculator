@@ -6,6 +6,7 @@ const initializer = document.querySelector(".operateButton");
 let textContent = "";
 let array = [];
 let numString = "";
+let solution = 0;
 let count = 0;
 
 function getSum() {
@@ -17,6 +18,8 @@ function getSum() {
   
     if (isNaN(y)){
         return x + x;
+    } else if(isNaN(x)){
+        return y;
     } else {
         return x + y;
     }
@@ -31,6 +34,8 @@ function getSubtraction() {
    
     if (isNaN(y)){
         return x - x;
+    } else if (isNaN(x)){
+        return parseFloat("-" + y);
     } else {
         return x - y;
     }
@@ -45,6 +50,8 @@ function getMultiplication() {
 
     if (isNaN(y)){
         return x * x;
+    } else if(isNaN(x)){
+        return 0;
     } else {
         return x * y;
     }
@@ -59,6 +66,8 @@ function getDivision() {
 
     if (isNaN(y)){
         return x / x;
+    } else if(isNaN(x)){
+        return 0;
     } else {
         return x / y;
     }
@@ -68,32 +77,36 @@ function getNumber(e) {
     const num = e.target.dataset.num;
     if (array[0] === undefined) {
         display.textContent += num;
-    } else if (array[0] !== undefined && array[1] === undefined && numString === "") {
+        numString += num; 
+    } else if (array[0] !== undefined && array[1] === undefined){
+        display.textContent += num;
+        numString += num;
+    }else if (answer !== 0 && array[1] === undefined && numString === "") {
         array = [];
         display.textContent = "";
         display.textContent += num;
+        numString += num;
     } else if (array[1] !== undefined && numString === ""){
         display.textContent = "";
         display.textContent += num;
-    } else {
+        numString += num;
+    } else if (array[1] !== undefined && numString !== ""){
         display.textContent += num;
+        numString += num;
     }
-    numString += num; 
 }
 
 function getOperator(e) {
     const operator = e.target.dataset.operator;
     count ++;
-   
+   // add function to return number when pressing equals without operators
     if (numString != "") {
         array.push(numString);
     } 
     numString = "";
     console.log(array);
 
-    if (array[0] === undefined){
-        return;
-    }else if (count >= 2 && array[2] !== undefined) {
+    if (count >= 2 && array[2] !== undefined) {
         operate(e);
         array.push(operator);
     } else if (count >=2 && array[1] === undefined) {
@@ -142,7 +155,7 @@ function operate(e) {
     } else {
         return;
     }
-    const solution = parseFloat(array[0].toFixed(7));
+    solution += parseFloat(array[0].toFixed(7));
     console.log(solution);
     display.textContent += solution;
 }
@@ -151,3 +164,4 @@ numbers.forEach(number => number.addEventListener("click", getNumber));
 operators.forEach(operator => operator.addEventListener("click", getOperator));
 initializer.addEventListener("click", operate);
  
+// added support for decimal number inputs
