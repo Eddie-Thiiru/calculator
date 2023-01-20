@@ -1,8 +1,8 @@
 const display = document.querySelector("#display");
+const clear = document.querySelector("#clear");
 const numbers = document.querySelectorAll(".number");
 const operators = document.querySelectorAll(".operator");
 const initializer = document.querySelector(".operateButton");
-const clear = document.querySelector(".clear");
 
 let textContent = "";
 let array = [];
@@ -144,7 +144,7 @@ function operate(e) {
         array.push(numString);
     } 
     numString = "";
-    display.textContent = "";  
+    display.textContent = "0";  
     console.log(array);
 
     if (array[0] !== undefined) {
@@ -178,14 +178,14 @@ function operate(e) {
             solution = 0;
             solution += parseFloat(array[0].toFixed(7));
             console.log(solution);
-            display.textContent += solution;
+            display.textContent = solution;
 
         } else {
             const answer = parseFloat(array[0]);
             array.splice(0, 1, answer);
             solution = 0;
             solution = parseFloat(array[0].toFixed(7));
-            display.textContent += solution;
+            display.textContent = solution;
         }    
 
     } else {
@@ -196,10 +196,10 @@ function operate(e) {
 numbers.forEach(number => number.addEventListener("click", getNumber));
 operators.forEach(operator => operator.addEventListener("click", getOperator));
 initializer.addEventListener("click", operate);
-// clear.addEventListener("click", ()=> {
-//     display.textContent = "0";
-//     let numString = "";
-//     let array = [];
-//     let solution = 0;
-//     let count = 0;
-// })
+clear.addEventListener("click", ()=> {
+    display.textContent = "0";
+    numString = "";
+    array = [];
+    solution = 0;
+    count = 0;
+})
