@@ -2,12 +2,14 @@ const display = document.querySelector("#display");
 const numbers = document.querySelectorAll(".number");
 const operators = document.querySelectorAll(".operator");
 const initializer = document.querySelector(".operateButton");
+const clear = document.querySelector(".clear");
 
 let textContent = "";
 let array = [];
 let numString = "";
 let solution = 0;
 let count = 0;
+display.textContent = "0"
 
 function getSum() {
     const index = array.indexOf("+");
@@ -75,13 +77,28 @@ function getDivision() {
 
 function getNumber(e) {
     const num = e.target.dataset.num;
-    if (num === "."){
+   console.log(numString);
+    if (num === "." && array[0] === undefined && numString === "") {
+        display.textContent = "";
+        display.textContent += "0" + num;
+        numString += "0" + num; 
+    } else if (num === "." && solution !== 0 && numString === "") {
+        array = [];
+        display.textContent = "";
+        display.textContent += "0" + num;
+        numString += "0" + num;
+    } else if (num === "." && numString === "0.") {
+        return;
+    } else if (num === "." && numString.includes(".")){
+        return
+    } else if (array[0] === undefined && numString === "") {
+        display.textContent = "";
         display.textContent += num;
         numString += num; 
-    }else if (array[0] === undefined) {
+    } else if (array[0] === undefined && numString !== "") {
         display.textContent += num;
         numString += num; 
-    } else if (array[0] !== undefined && array[1] === undefined){
+    }else if (array[0] !== undefined && array[1] === undefined){
         display.textContent += num;
         numString += num;
     }else if (solution !== 0 && array[1] === undefined && numString === "") {
@@ -158,6 +175,7 @@ function operate(e) {
                     break;
                 }  
             }
+            solution = 0;
             solution += parseFloat(array[0].toFixed(7));
             console.log(solution);
             display.textContent += solution;
@@ -166,7 +184,7 @@ function operate(e) {
             const answer = parseFloat(array[0]);
             array.splice(0, 1, answer);
             solution = 0;
-            solution += parseFloat(array[0].toFixed(7));
+            solution = parseFloat(array[0].toFixed(7));
             display.textContent += solution;
         }    
 
@@ -178,7 +196,10 @@ function operate(e) {
 numbers.forEach(number => number.addEventListener("click", getNumber));
 operators.forEach(operator => operator.addEventListener("click", getOperator));
 initializer.addEventListener("click", operate);
- 
-// Add support for decimal number inputs
-
-// convert the solution to string to remove imperfect calculations
+// clear.addEventListener("click", ()=> {
+//     display.textContent = "0";
+//     let numString = "";
+//     let array = [];
+//     let solution = 0;
+//     let count = 0;
+// })
