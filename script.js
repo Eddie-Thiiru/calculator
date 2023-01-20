@@ -4,7 +4,6 @@ const numbers = document.querySelectorAll(".number");
 const operators = document.querySelectorAll(".operator");
 const initializer = document.querySelector(".operateButton");
 
-let textContent = "";
 let array = [];
 let numString = "";
 let solution = 0;
@@ -18,7 +17,9 @@ function getSum() {
     const x = parseFloat(array[firstIndex]);
     const y = parseFloat(array[secondIndex]);
   
-    if (isNaN(y)){
+    if (isNaN(x) && isNaN(y)) {
+        return 0;
+    } else if  (isNaN(y)){
         return x + x;
     } else if(isNaN(x)){
         return y;
@@ -34,7 +35,9 @@ function getSubtraction() {
     const x = parseFloat(array[firstIndex]);
     const y = parseFloat(array[secondIndex]);
    
-    if (isNaN(y)){
+    if (isNaN(x) && isNaN(y)) {
+        return 0;
+    } else if  (isNaN(y)){
         return x - x;
     } else if (isNaN(x)){
         return parseFloat("-" + y);
@@ -50,7 +53,9 @@ function getMultiplication() {
     const x = parseFloat(array[firstIndex]);
     const y = parseFloat(array[secondIndex]);
 
-    if (isNaN(y)){
+    if (isNaN(x) && isNaN(y)) {
+        return 0;
+    } else if (isNaN(y)){
         return x * x;
     } else if(isNaN(x)){
         return 0;
@@ -66,10 +71,16 @@ function getDivision() {
     const x = parseFloat(array[firstIndex]);
     const y = parseFloat(array[secondIndex]);
 
-    if (isNaN(y)){
+    if (isNaN(x) && isNaN(y)) {
+        return 0;
+    } else if (x === 0) {
+        return "bruh!";
+    }else if (isNaN(y)){
         return x / x;
     } else if(isNaN(x)){
         return 0;
+    } else if(y === 0) {
+        return "bruh!";
     } else {
         return x / y;
     }
@@ -87,7 +98,7 @@ function getNumber(e) {
         display.textContent = "";
         display.textContent += "0" + num;
         numString += "0" + num;
-    } else if (num === "." && numString === "0.") {
+    } else if (num === "." && numString === "0." ) {
         return;
     } else if (num === "." && numString.includes(".")){
         return
@@ -98,10 +109,7 @@ function getNumber(e) {
     } else if (array[0] === undefined && numString !== "") {
         display.textContent += num;
         numString += num; 
-    }else if (array[0] !== undefined && array[1] === undefined){
-        display.textContent += num;
-        numString += num;
-    }else if (solution !== 0 && array[1] === undefined && numString === "") {
+    } else if (array[0] !== undefined && array[1] === undefined && numString === "") {
         array = [];
         display.textContent = "";
         display.textContent += num;
@@ -175,13 +183,12 @@ function operate(e) {
                     break;
                 }  
             }
-            solution = 0;
-            solution += parseFloat(array[0].toFixed(7));
+            solution = (array[0] === "bruh!"? "bruh!": parseFloat(array[0].toFixed(7)));
             console.log(solution);
             display.textContent = solution;
 
         } else {
-            const answer = parseFloat(array[0]);
+            const answer = (array[0] === "bruh!"? 0: parseFloat(array[0]));
             array.splice(0, 1, answer);
             solution = 0;
             solution = parseFloat(array[0].toFixed(7));
