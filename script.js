@@ -1,5 +1,6 @@
 const display = document.querySelector("#display");
 const clear = document.querySelector("#clear");
+const backspace = document.querySelector("#backspace");
 const numbers = document.querySelectorAll(".number");
 const operators = document.querySelectorAll(".operator");
 const initializer = document.querySelector(".operateButton");
@@ -200,6 +201,54 @@ function operate(e) {
     } 
 }
 
+function deleteEntry (e) {
+    if (numString != "") {
+        array.push(numString);
+    } 
+   
+    for(let i = array.length -1; i >= 0; i-- ) {
+       
+        if (array.length === 1 && typeof(+array[i]) === "number"){
+            const arr = (array[i] + "").split("");
+            if (arr.length > 1) {
+                let index = arr.length - 1 
+                arr.splice(index, 1);
+                const newNumber = arr.join("");
+                array.splice(i, 1, newNumber);
+                display.textContent = newNumber;
+                numString = "";
+                break;
+            } else {
+                array.splice(0, 1);
+                console.log(array);
+                display.textContent = "0";
+                numString = "";
+                break;
+            }
+        } else if (array.length > 2 && typeof(+array[i]) === "number"){
+            const arr = (array[i] + "").split("");
+            if (arr.length > 1) {
+                let index = arr.length - 1 
+                arr.splice(index, 1);
+                const newNumber = arr.join("");
+                array.splice(i, 1, newNumber);
+                console.log(array);
+                display.textContent = newNumber;
+                numString = "";
+                break;
+            } else {
+                array.splice(2, 1);
+                console.log(array);
+                display.textContent = array[0];
+                numString = "";
+                break;
+            }
+        }else {
+            break;
+        }
+    }
+}
+
 numbers.forEach(number => number.addEventListener("click", getNumber));
 operators.forEach(operator => operator.addEventListener("click", getOperator));
 initializer.addEventListener("click", operate);
@@ -210,3 +259,4 @@ clear.addEventListener("click", ()=> {
     solution = 0;
     count = 0;
 })
+backspace.addEventListener("click", deleteEntry);
