@@ -1,36 +1,91 @@
 body {
     height: 100vh;
-    font-family: Arial, Helvetica, sans-serif;
     background-color: rgb(230, 235, 235);
     display: flex;
     justify-content: center;
-    align-items: center;
+    overflow: hidden;
 }
 
 #calculator {
     height: 500px;
     width: 400px;
-    margin: 10px;
+    margin-top: 100px;
     border: 8px solid black;
+    border-radius: 16px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
 }
 
 #display {
-    height: 100px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 48px;
+    font-weight: 500;
     border: 4px solid rgb(120, 120, 120);
+    height: 100px;
+    border-radius: 10px;
+    margin: 5px;
+    display: flex;
+    justify-content: end;
+    align-items: flex-end;
 }
 
-.calcButtons {
-    border: 2px solid blue;
+.buttonContainer {
     display: flex;
-   
+    justify-content: space-around;
+    margin: 15px 10px;
+}
+
+.clearDelete {
+    display: flex;
+    justify-content: flex-start;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+
+.clearDelete > button:first-child {
+    width: 130px;
+    border-radius: 25px 10px 10px 25px;
+}
+
+.clearDelete > button:last-child {
+    width: 130px;
+    border-radius: 10px 25px 25px 10px;
+}
+
+#numbers {
+  
+   display: flex;
+   flex-wrap: wrap-reverse;
+   gap: 5px;
 }
 
 button {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    background-color: darkgray;
+    color: white;
     border: 2px solid black;
     border-radius: 5px;
-    height: 60px;
+    height: 65px;
     width: 85px;
+}
+
+button.number {
+    border-radius: 25px;
+}
+button.nilButton {
+        width: 175px;
+}
+
+#operators {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#initializer {
+    display: flex;
+    margin-top: 5px;  
 }

@@ -103,7 +103,9 @@ function getNumber(e) {
         return;
     } else if (num === "." && numString.includes(".")){
         return
-    } else if (array[0] === undefined && numString === "") {
+    } else if (numString.length === 12) {
+        return;
+    }else if (array[0] === undefined && numString === "") {
         display.textContent = "";
         display.textContent += num;
         numString += num; 
