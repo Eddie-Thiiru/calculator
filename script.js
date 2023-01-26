@@ -10,7 +10,7 @@ let numString = "";
 let solution = 0;
 let count = 0;
 let keyValue = "";
-display.textContent = "0"
+display.textContent = "0";
 
 function getSum() {
     const index = array.indexOf("+");
@@ -103,10 +103,10 @@ function getNumber(e) {
     } else if (num === "." && numString === "0." ) {
         return;
     } else if (num === "." && numString.includes(".")){
-        return
+        return;
     } else if (numString.length === 12) {
         return;
-    }else if (array[0] === undefined && numString === "") {
+    } else if (array[0] === undefined && numString === "") {
         display.textContent = "";
         display.textContent += num;
         numString += num; 
@@ -118,6 +118,11 @@ function getNumber(e) {
         display.textContent = "";
         display.textContent += num;
         numString += num;
+    } else if (array[0] !== undefined && array[1] === undefined && numString !== "") {
+        array = [];
+        display.textContent = "";
+        numString += num;
+        display.textContent += numString;  
     } else if (array[1] !== undefined && numString === ""){
         display.textContent = "";
         display.textContent += num;
@@ -132,11 +137,12 @@ function getOperator(e) {
     const operator = (e.target.dataset.operator === undefined? keyValue: e.target.dataset.operator);
     count ++;
   
-    if (numString != "") {
+    if (array[0] === undefined && numString !== "") {
         array.push(numString);
-    } 
+    } else if (array[1] !== undefined && numString !== "") {
+        array.push(numString);
+    }
     numString = "";
-    console.log(array);
 
     if (keyValue === "="){
         operate(e);
@@ -150,16 +156,16 @@ function getOperator(e) {
     } else {
         array.push(operator);
     }
-    console.log(array);
 }
 
 function operate(e) {
-    if (numString !== "") {
+    if (array[0] === undefined && numString !== "") {
         array.push(numString);
-    } 
+    } else if (array[1] !== undefined && numString !== "") {
+        array.push(numString);
+    }
     numString = "";
     display.textContent = "0";  
-    console.log(array);
 
     if (array[0] !== undefined) {
 
@@ -168,36 +174,30 @@ function operate(e) {
             for (let i = 0; i < array.length; i++ ){
                 if (array[i] === "+") {
                     const answer = getSum();
-                    console.log(answer);
-                    array.splice(0, 3, answer);
-                    console.log(array);
+                    array.splice(0, 3, parseFloat(answer.toFixed(5)));
                     break;
                 } else if (array[i] === "-") {
                     const answer = getSubtraction();
-                    array.splice(0, 3, answer);
-                    console.log(array);
+                    array.splice(0, 3, parseFloat(answer.toFixed(5)));
                     break;
                 } else if (array[i] === "*") {
                     const answer = getMultiplication();  
-                    array.splice(0, 3, answer);
-                    console.log(array);
+                    array.splice(0, 3, parseFloat(answer.toFixed(5)));
                     break;
                 } else if (array[i] === "/") {
                     const answer = getDivision();
-                    array.splice(0, 3, answer);
-                    console.log(array);
+                    array.splice(0, 3, parseFloat(answer.toFixed(5)));
                     break;
                 }  
             }
-            solution = (array[0] === "bruh!"? "bruh!": parseFloat(array[0].toFixed(7)));
-            console.log(solution);
+            solution = (array[0] === "bruh!"? "bruh!": array[0]);
             display.textContent = solution;
 
         } else {
             const answer = (array[0] === "bruh!"? 0: parseFloat(array[0]));
-            array.splice(0, 1, answer);
+            array.splice(0, 1, parseFloat(answer.toFixed(5)));
             solution = 0;
-            solution = parseFloat(array[0].toFixed(7));
+            solution = array[0];
             display.textContent = solution;
         }    
 
@@ -207,7 +207,9 @@ function operate(e) {
 }
 
 function deleteEntry(e) {
-    if (numString != "") {
+    if (array[0] === undefined && numString !== "") {
+        array.push(numString);
+    } else if (array[1] !== undefined && array[2] === undefined && numString !== "") {
         array.push(numString);
     } 
    
@@ -216,16 +218,15 @@ function deleteEntry(e) {
         if (array.length === 1 && typeof(+array[i]) === "number"){
             const arr = (array[i] + "").split("");
             if (arr.length > 1) {
-                let index = arr.length - 1 
+                let index = arr.length - 1; 
                 arr.splice(index, 1);
                 const newNumber = arr.join("");
                 array.splice(i, 1, newNumber);
                 display.textContent = newNumber;
-                numString = "";
+                numString = newNumber;
                 break;
             } else {
                 array.splice(0, 1);
-                console.log(array);
                 display.textContent = "0";
                 numString = "";
                 break;
@@ -233,17 +234,15 @@ function deleteEntry(e) {
         } else if (array.length > 2 && typeof(+array[i]) === "number"){
             const arr = (array[i] + "").split("");
             if (arr.length > 1) {
-                let index = arr.length - 1 
+                let index = arr.length - 1; 
                 arr.splice(index, 1);
                 const newNumber = arr.join("");
                 array.splice(i, 1, newNumber);
-                console.log(array);
                 display.textContent = newNumber;
-                numString = "";
+                numString = newNumber;
                 break;
             } else {
                 array.splice(2, 1);
-                console.log(array);
                 display.textContent = array[0];
                 numString = "";
                 break;
@@ -272,12 +271,10 @@ function inputCommand(e) {
         getNumber(e);
     } else if (operatorValue) {
         keyValue = e.key;
-        console.log(keyValue);
         getOperator(e);
     } else if (calculate || e.key === "Enter") {
         keyValue = e.key;
         operate(e);
-        console.log(e.key);
     } else if (e.key === "Backspace"){
         deleteEntry(e);
     } else if (e.key === "Delete") {
