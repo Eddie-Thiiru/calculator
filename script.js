@@ -9,6 +9,7 @@ let array = [];
 let numString = "";
 let solution = 0;
 let count = 0;
+let keyValue = "";
 display.textContent = "0"
 
 function getSum() {
@@ -87,9 +88,9 @@ function getDivision() {
     }
 }
 
-function getNumber(e) {
-    const num = e.target.dataset.num;
-   console.log(numString);
+function getNumber(e) { 
+    let num = (e.target.dataset.num === undefined? keyValue: e.target.dataset.num);
+   
     if (num === "." && array[0] === undefined && numString === "") {
         display.textContent = "";
         display.textContent += "0" + num;
@@ -128,7 +129,7 @@ function getNumber(e) {
 }
 
 function getOperator(e) {
-    const operator = e.target.dataset.operator;
+    const operator = (e.target.dataset.operator === undefined? keyValue: e.target.dataset.operator);
     count ++;
   
     if (numString != "") {
@@ -137,7 +138,9 @@ function getOperator(e) {
     numString = "";
     console.log(array);
 
-    if (count >= 2 && array[2] !== undefined) {
+    if (keyValue === "="){
+        operate(e);
+    } else if(count >= 2 && array[2] !== undefined) {
         operate(e);
         array.push(operator);
     } else if (count >=2 && array[1] === undefined) {
@@ -203,7 +206,7 @@ function operate(e) {
     } 
 }
 
-function deleteEntry (e) {
+function deleteEntry(e) {
     if (numString != "") {
         array.push(numString);
     } 
@@ -251,14 +254,42 @@ function deleteEntry (e) {
     }
 }
 
-numbers.forEach(number => number.addEventListener("click", getNumber));
-operators.forEach(operator => operator.addEventListener("click", getOperator));
-initializer.addEventListener("click", operate);
-clear.addEventListener("click", ()=> {
+function clearCalculator(e) {
     display.textContent = "0";
     numString = "";
     array = [];
     solution = 0;
     count = 0;
-})
+}
+
+function inputCommand(e) {
+    const numberValue = document.querySelector(`button[data-num="${e.key}"]`);
+    const operatorValue = document.querySelector(`button[data-operator="${e.key}"]`);
+    const calculate = document.querySelector(`button[data-operate="${e.key}"]`);
+ 
+    if (numberValue) {
+        keyValue = e.key;
+        getNumber(e);
+    } else if (operatorValue) {
+        keyValue = e.key;
+        console.log(keyValue);
+        getOperator(e);
+    } else if (calculate || e.key === "Enter") {
+        keyValue = e.key;
+        operate(e);
+        console.log(e.key);
+    } else if (e.key === "Backspace"){
+        deleteEntry(e);
+    } else if (e.key === "Delete") {
+        clearCalculator(e);
+    } else {
+        return;
+    }
+}
+
+numbers.forEach(number => number.addEventListener("click", getNumber));
+operators.forEach(operator => operator.addEventListener("click", getOperator));
+initializer.addEventListener("click", operate);
+clear.addEventListener("click", clearCalculator);
 backspace.addEventListener("click", deleteEntry);
+window.addEventListener("keydown", inputCommand);
